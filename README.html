@@ -1,0 +1,200 @@
+<h1 id="homework-pockerdeck-api-project">Homework PockerDeck API project</h1>
+<p>Build a REST API to deal cards from a PokerDeck</p>
+<p><em>Author: Bruno Martinez</em> <em>Date : 21/01/2018</em></p>
+<h2 id="subject">Subject</h2>
+<p>Your assignment is to code, in an objected-oriented programming language, a set of classes and a REST API that represent a deck of poker-style playing cards. (Fifty-two playing cards in four suits: hearts, spades, clubs, diamonds, with face values of Ace, 2-10, Jack, Queen, and King.)</p>
+<p>Within one of your classes, you must provide two operations:</p>
+<ul>
+<li>shuffle()</li>
+</ul>
+<p>Shuffle returns no value, but results in the cards in the deck being randomly permuted. Please do not use library-provided “shuffle” operations to implement this function. You may use library- provided random number generators in your solution.</p>
+<ul>
+<li>dealOneCard()</li>
+</ul>
+<p>This function should return one card from the deck to the caller. Specifically, a call to shuffle followed by 52 calls to dealOneCard should result in the caller being provided all 52 cards of the deck in a random order. If the caller then makes a 53rd call to dealOneCard, no card is dealt.</p>
+<p>After implementing this internal interface, you must expose the functions to create a deck, shuffle a deck, and deal a card from a deck via a REST API. The structure of the REST API is up to you but please consider the combination of resources and actions represented by this problem and make appropriate tradeoffs in compliance to strict REST doctrine.</p>
+<h2 id="building-and-launching">Building and Launching</h2>
+<h3 id="prerequisite">Prerequisite</h3>
+<ul>
+<li>Gradle to build and launch the project</li>
+<li>Curl tool or similar to do manual test to the standalone local server</li>
+<li>Java 1.7 or higher</li>
+</ul>
+<h3 id="building-and-launching-the-unit-tests">Building and launching the unit tests</h3>
+<pre><code>gradlew build</code></pre>
+<p>This will produce a unit test report: build/reports/tests/test/index.html</p>
+<h3 id="launching-the-standalone-server-and-do-some-manual-tests">Launching the standalone server and do some manual tests</h3>
+<p>This section explains how to launch the server to test the REST API. <em>Note: in this simple version the server uses in memory data persistence only.</em></p>
+<h4 id="install-the-application">Install the application</h4>
+<p>This will deploy everything needed in a build/install.</p>
+<pre><code>gradlew installDist</code></pre>
+<h4 id="launch-the-server-with-the-script">Launch the server with the script:</h4>
+<p>To launch the simple local server listening on localhost:8080.</p>
+<pre><code>build\install\JiveHomeTest\bin\JiveHomeTest</code></pre>
+<h4 id="test-the-api">Test the API</h4>
+<p>In another console use curl to test the API</p>
+<ul>
+<li>Create a new Deck</li>
+</ul>
+<pre><code>$&gt;curl -i -X POST http://localhost:8080/api/v1/decks/
+HTTP/1.1 201 Created
+Location: http://localhost:8080/api/v1/decks/10
+Date: Sun, 21 Jan 2018 09:54:45 GMT
+Content-Length: 0</code></pre>
+<ul>
+<li>Get the new deck (it is not shuffled yet)</li>
+</ul>
+<pre><code>$&gt;curl -i -X GET http://localhost:8080/api/v1/decks/10
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sun, 21 Jan 2018 09:55:52 GMT
+Content-Length: 116
+
+{&quot;id&quot;:10,&quot;link&quot;:&quot;http://localhost:8080/api/v1/decks/10&quot;,&quot;linkDeal&quot;:&quot;http://localhost:8080/api/v1/decks/10/dealcard&quot;}     </code></pre>
+<ul>
+<li>Shuffle it</li>
+</ul>
+<pre><code>$&gt;curl -i -X PUT http://localhost:8080/api/v1/decks/10
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sun, 21 Jan 2018 09:55:52 GMT
+Content-Length: 116
+
+{&quot;id&quot;:10,&quot;link&quot;:&quot;http://localhost:8080/api/v1/decks/10&quot;,&quot;linkDeal&quot;:&quot;http://localhost:8080/api/v1/decks/10/dealcard&quot;}     </code></pre>
+<ul>
+<li>Deal some cards</li>
+</ul>
+<pre><code>curl -i -X PUT http://localhost:8080/api/v1/decks/10/dealcard
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sat, 20 Jan 2018 22:33:58 GMT
+Content-Length: 33
+
+{&quot;suit&quot;:&quot;HEARTS&quot;,&quot;value&quot;:&quot;SEVEN&quot;}</code></pre>
+<pre><code>curl -i -X PUT http://localhost:8080/api/v1/decks/10/dealcard
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sat, 20 Jan 2018 22:34:34 GMT
+Content-Length: 33
+        
+{&quot;suit&quot;:&quot;DIAMONDS&quot;,&quot;value&quot;:&quot;TWO&quot;} </code></pre>
+<ul>
+<li>Get the last card that was dealt</li>
+</ul>
+<pre><code>curl -i -X GET http://localhost:8080/api/v1/decks/10/dealcard
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sat, 20 Jan 2018 22:34:34 GMT
+Content-Length: 33
+        
+{&quot;suit&quot;:&quot;DIAMONDS&quot;,&quot;value&quot;:&quot;TWO&quot;}</code></pre>
+<h3 id="other-javadoc-jar-war-..-etc">Other: (Javadoc / JAR / WAR .. etc)</h3>
+<p>Javadoc:</p>
+<pre><code>gradlew.bat javadoc </code></pre>
+<p>Otherwise launch: <code>gradlew.bat tasks</code> This will give the complete list of possible tasks.</p>
+<h2 id="implementation-details">Implementation details</h2>
+<h3 id="poker-deck-model">Poker Deck model</h3>
+<p>To shuffle the poker deck I wrote my own shuffle method base on the popular algorithm of Fisher And Yates, in a generic class. The random number generation uses the standard <code>java.util.Random</code>, which is enough for this project (<code>java.security.SecureRandom</code> may be preferred when security is involved or for implementing real gambling game)</p>
+<h3 id="poker-deck-storage">Poker Deck storage</h3>
+<p>Instead of storing the full deck (list of cards), I introduced the concept of DeckSnapshot that captures the current state of a Deck and allows to restore it later. DeckSnapshot actually contains a copy of the seed number used to initialize the random number generator in the last shuffling operation. Thus, shuffling a new Deck instance with same seed number will result in obtaining the same card sequence order as in the original Deck instance.</p>
+<h3 id="java-rest-server">Java Rest Server</h3>
+<p>I tried to used common libraries relying of standard concept of Java REST Servers:</p>
+<ul>
+<li>Jersey library implementing the standard JAX-RS API (RESTful Web Services)</li>
+<li>Hibernate library implementing the standard JPA API (Persistence API)</li>
+<li>Additionally I used the popular jackson library for converting object to/from JSON format.</li>
+</ul>
+<p>For the actual HTTP server and Databases implementation and how to test it locally with Junit, I took examples from this website: https://technologyconversations.com/2014/03/26/application-development-back-end-solution-with-java/</p>
+<p>It uses: * HSQLDB for the database (in memory flavor) * Grizzly Web Server</p>
+<h3 id="rest-api">REST API</h3>
+<h4 id="operations-and-resources">Operations and resources</h4>
+<table>
+<thead>
+<tr class="header">
+<th align="left">HTTP Action</th>
+<th align="left">Resource</th>
+<th align="left">Description</th>
+<th align="left">Reply Content</th>
+<th align="left">Success status code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">POST</td>
+<td align="left">/api/v1/decks</td>
+<td align="left">Creates a new deck</td>
+<td align="left">Body: None, Location: URI of the new created resource</td>
+<td align="left">201-CREATED</td>
+</tr>
+<tr class="even">
+<td align="left">GET</td>
+<td align="left">/api/v1/decks/<id></td>
+<td align="left">Get an existing deck</td>
+<td align="left">Body: JSON describing the deck and link to other actions</td>
+<td align="left">200-OK</td>
+</tr>
+<tr class="odd">
+<td align="left">PUT</td>
+<td align="left">/api/v1/decks/<id></td>
+<td align="left">Reset and Shuffle an existing deck. After this call, it is possible to deal up to 52 cards.</td>
+<td align="left">Body: JSON describing the deck and link to other actions</td>
+<td align="left">200-OK</td>
+</tr>
+<tr class="even">
+<td align="left">PUT</td>
+<td align="left">/api/v1/decks/<id>/dealcard</td>
+<td align="left">Deals a new card (if any)</td>
+<td align="left">Body: JSON describing the new card</td>
+<td align="left">200-OK</td>
+</tr>
+<tr class="odd">
+<td align="left">GET</td>
+<td align="left">/api/v1/decks/<id>/dealcard</td>
+<td align="left">Get the last card that was dealt from the deck.</td>
+<td align="left">Body: JSON describing the new card</td>
+<td align="left">200-OK</td>
+</tr>
+</tbody>
+</table>
+<h4 id="functional-errors">Functional Errors</h4>
+<table>
+<thead>
+<tr class="header">
+<th align="left">HTTP Action</th>
+<th align="left">Resource</th>
+<th align="left">HTTP Error code</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GET</td>
+<td align="left">/api/v1/decks/<id></td>
+<td align="left">404-NOT FOUND</td>
+<td align="left">The deck resource with id <id> does not exists yet.</td>
+</tr>
+<tr class="even">
+<td align="left">PUT</td>
+<td align="left">/api/v1/decks/<id></td>
+<td align="left">404-NOT FOUND</td>
+<td align="left">The deck resource with id <id> does not exists yet.</td>
+</tr>
+<tr class="odd">
+<td align="left">PUT</td>
+<td align="left">/api/v1/decks/<id>/dealcard</td>
+<td align="left">404-NOT FOUND</td>
+<td align="left">The deck resource with id <id> does not exists yet.</td>
+</tr>
+<tr class="even">
+<td align="left">GET</td>
+<td align="left">/api/v1/decks/<id>/dealcard</td>
+<td align="left">404-NOT FOUND</td>
+<td align="left">The deck resource with id <id> does not exists yet. Or no card was dealt from the deck yet. Or all the cards were dealt from the deck</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testing">Testing</h3>
+<p>I wrote many unit tests using Junit and I reached a coverage of 85.5% on the main source directory (excluding test files). To gain time I did not unit tested method such as &quot;toString()&quot; (not critical in the project) or basic setters/getters.</p>
+<p>I did manual testing with curl command line tool.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>This was extremely interesting do to this projects as it was the opportunity to have a refresh on the latest Java technology (these last years I rather developed in C++ and python). I took this opportunity to read many documentation and I learned a lot.</p>
