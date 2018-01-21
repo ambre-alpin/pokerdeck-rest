@@ -62,7 +62,7 @@ gradlew installDist
 
 To launch the simple local server listening on localhost:8080.  
 ``` 
-build\install\JiveHomeTest\bin\JiveHomeTest
+build\install\PokerDeckRest\bin\PokerDeckRest
 ```
 
 #### Test the API 
