@@ -129,28 +129,28 @@ Content-Length: 33
 </tr>
 <tr class="even">
 <td align="left">GET</td>
-<td align="left">/api/v1/decks/<id></td>
+<td align="left">/api/v1/decks/&lt;id&gt;</td>
 <td align="left">Get an existing deck</td>
 <td align="left">Body: JSON describing the deck and link to other actions</td>
 <td align="left">200-OK</td>
 </tr>
 <tr class="odd">
 <td align="left">PUT</td>
-<td align="left">/api/v1/decks/<id></td>
+<td align="left">/api/v1/decks/&lt;id&gt;</td>
 <td align="left">Reset and Shuffle an existing deck. After this call, it is possible to deal up to 52 cards.</td>
 <td align="left">Body: JSON describing the deck and link to other actions</td>
 <td align="left">200-OK</td>
 </tr>
 <tr class="even">
 <td align="left">PUT</td>
-<td align="left">/api/v1/decks/<id>/dealcard</td>
+<td align="left">/api/v1/decks/&lt;id&gt;/dealcard</td>
 <td align="left">Deals a new card (if any)</td>
 <td align="left">Body: JSON describing the new card</td>
 <td align="left">200-OK</td>
 </tr>
 <tr class="odd">
 <td align="left">GET</td>
-<td align="left">/api/v1/decks/<id>/dealcard</td>
+<td align="left">/api/v1/decks/&lt;id&gt;/dealcard</td>
 <td align="left">Get the last card that was dealt from the deck.</td>
 <td align="left">Body: JSON describing the new card</td>
 <td align="left">200-OK</td>
@@ -170,25 +170,25 @@ Content-Length: 33
 <tbody>
 <tr class="odd">
 <td align="left">GET</td>
-<td align="left">/api/v1/decks/<id></td>
+<td align="left">/api/v1/decks/&lt;id&gt;</td>
 <td align="left">404-NOT FOUND</td>
 <td align="left">The deck resource with id <id> does not exists yet.</td>
 </tr>
 <tr class="even">
 <td align="left">PUT</td>
-<td align="left">/api/v1/decks/<id></td>
+<td align="left">/api/v1/decks/&lt;id&gt;</td>
 <td align="left">404-NOT FOUND</td>
 <td align="left">The deck resource with id <id> does not exists yet.</td>
 </tr>
 <tr class="odd">
 <td align="left">PUT</td>
-<td align="left">/api/v1/decks/<id>/dealcard</td>
+<td align="left">/api/v1/decks/&lt;id&gt;/dealcard</td>
 <td align="left">404-NOT FOUND</td>
 <td align="left">The deck resource with id <id> does not exists yet.</td>
 </tr>
 <tr class="even">
 <td align="left">GET</td>
-<td align="left">/api/v1/decks/<id>/dealcard</td>
+<td align="left">/api/v1/decks/&lt;id&gt;/dealcard</td>
 <td align="left">404-NOT FOUND</td>
 <td align="left">The deck resource with id <id> does not exists yet. Or no card was dealt from the deck yet. Or all the cards were dealt from the deck</td>
 </tr>
