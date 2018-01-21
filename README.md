@@ -185,20 +185,20 @@ It uses:
 |    HTTP Action    |    Resource                       |    Description                                                                                     |    Reply Content                                               |    Success status code    |
 |-------------------|-----------------------------------|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------|---------------------------|
 |    POST           |    /api/v1/decks                  |    Creates a new deck                                                                              |    Body: None, Location: URI of the new created resource       |    201-CREATED          |
-|    GET            |    /api/v1/decks/<id>             |    Get an existing deck                                                                            |    Body: JSON describing the deck and link to other actions    |    200-OK               |
-|    PUT            |    /api/v1/decks/<id>             |    Reset and Shuffle an existing deck.  After this call, it is possible to deal up to 52 cards.    |    Body: JSON describing the deck and link to other actions    |    200-OK               |
-|    PUT            |    /api/v1/decks/<id>/dealcard    |    Deals a new card (if any)                                                                       |    Body: JSON describing the new card                          |    200-OK               |
-|    GET            |    /api/v1/decks/<id>/dealcard    |    Get the last card that was dealt from the deck.                                                 |    Body: JSON describing the new card                          |    200-OK               |
+|    GET            |    /api/v1/decks/*id*             |    Get an existing deck                                                                            |    Body: JSON describing the deck and link to other actions    |    200-OK               |
+|    PUT            |    /api/v1/decks/*id*             |    Reset and Shuffle an existing deck.  After this call, it is possible to deal up to 52 cards.    |    Body: JSON describing the deck and link to other actions    |    200-OK               |
+|    PUT            |    /api/v1/decks/*id*/dealcard    |    Deals a new card (if any)                                                                       |    Body: JSON describing the new card                          |    200-OK               |
+|    GET            |    /api/v1/decks/*id*/dealcard    |    Get the last card that was dealt from the deck.                                                 |    Body: JSON describing the new card                          |    200-OK               |
 
 #### Functional Errors
 
 
 |    HTTP Action    |    Resource                       |    HTTP Error code      |     Description                                                                                                                                         |
 |-------------------|-----------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-|    GET            |    /api/v1/decks/<id>             |    404-NOT FOUND        |    The deck resource with id <id> does not exists yet.                                                                                                  |
-|    PUT            |    /api/v1/decks/<id>             |    404-NOT FOUND        |    The deck resource with id <id> does not exists yet.                                                                                                  |
-|    PUT            |    /api/v1/decks/<id>/dealcard    |    404-NOT FOUND        |    The deck resource with id <id> does not exists yet.                                                                                                  |
-|    GET            |    /api/v1/decks/<id>/dealcard    |    404-NOT FOUND        |    The deck resource with id <id> does not exists yet.       Or no card was dealt from the deck yet.       Or all the cards were dealt from the deck    |
+|    GET            |    /api/v1/decks/*id*             |    404-NOT FOUND        |    The deck resource with id <id> does not exists yet.                                                                                                  |
+|    PUT            |    /api/v1/decks/*id*             |    404-NOT FOUND        |    The deck resource with id <id> does not exists yet.                                                                                                  |
+|    PUT            |    /api/v1/decks/*id*/dealcard    |    404-NOT FOUND        |    The deck resource with id <id> does not exists yet.                                                                                                  |
+|    GET            |    /api/v1/decks/*id*/dealcard    |    404-NOT FOUND        |    The deck resource with id <id> does not exists yet.       Or no card was dealt from the deck yet.       Or all the cards were dealt from the deck    |
 
 
 ### Testing
