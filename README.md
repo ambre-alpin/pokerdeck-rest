@@ -3,9 +3,9 @@
 
 Build a REST API to deal cards from a PokerDeck
 
-*Author: Bruno Martinez*
+
 *Date : 21/01/2018*
-*Git: https://github.com/bmcmartinez/pokerdeck-rest*
+
 
 ## Subject
 
